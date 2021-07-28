@@ -6,7 +6,9 @@ namespace Bookstore
 {
     public class Constants
     {
-        internal static readonly string filename = "books.json";
+        internal static readonly string inputFilename = "books.json";
+        internal static readonly string outputFilename = "output.csv";
+        internal static readonly string inputType = "json";
         internal static readonly string outputType = "csv";
     }
 }
