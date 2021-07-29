@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Bookstore
 {
@@ -8,12 +10,17 @@ namespace Bookstore
         public static void Main()
         {
             DAL dal = new DAL();
+            BL bl = new BL();
 
-            List<Book> books = dal.CreateListFromData(Constants.inputType);
-            dal.FilterListByAuthorAndDay(books, "Peter", DayOfWeek.Saturday);
-            dal.RoundUpPrices(books);
-            dal.SortListByName(books);
-            dal.SaveListToDB(books, Constants.outputType);
+            IOrderedEnumerable<Book> books = dal.CreateIEnumerableFromJsonData().OrderBy(book => book.title);
+
+            bl.FilterBooksByAuthorAndDay(books, "Peter", DayOfWeek.Saturday);
+            bl.RoundUpPrices(books);
+            bl.SortBooksByName(books);
+            
+            dal.SaveIEnumerableToDB(books, Constants.outputType);
+
+            Process.Start("notepad.exe", Constants.outputFilename);
         }
     }
 }
