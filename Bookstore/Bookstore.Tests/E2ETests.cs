@@ -1,12 +1,17 @@
-﻿using System;
-using System.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace Bookstore
+namespace Bookstore.Tests
 {
-    class Program
+    [TestClass]
+    public class E2ETests
     {
-        public static void Main()
+        private readonly DAL dal = new DAL();
+        [TestMethod]
+        public void Csv_File_Valid()
         {
             DAL dal = new DAL();
             BL bl = new BL();
@@ -17,9 +22,10 @@ namespace Bookstore
             bl.FilterBooksByAuthorAndDay(books, "Peter", DayOfWeek.Saturday);
             bl.RoundUpPrices(books);
             bl.SortBooksByName(books);
-            
+
             // Write the processed collection to the DB (in this case, a CSV file)
-            dal.SaveIEnumerableToDB(books, Constants.outputType);
+            dal.SaveIEnumerableToDB(books, "csv");
+            Assert.IsTrue(File.Exists("output.csv"));
         }
     }
 }
